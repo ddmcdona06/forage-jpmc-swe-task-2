@@ -8,6 +8,8 @@ import './App.css';
  */
 interface IState {
   data: ServerRespond[],
+
+  //Defining the state of showGraph as a boolean.
   showGraph: boolean,
 }
 
@@ -23,6 +25,8 @@ class App extends Component<{}, IState> {
       // data saves the server responds.
       // We use this state to parse data down to the child element (Graph) as element property
       data: [],
+
+      //Adding the initial state of showGraph.
       showGraph: false
     };
   }
@@ -31,6 +35,8 @@ class App extends Component<{}, IState> {
    * Render Graph react component with state.data parse as property data
    */
   renderGraph() {
+
+    //If the state of showGraph is true, then render the graph on the page from the graph component while feeding in the data array from state.
     if (this.state.showGraph) {
       return (<Graph data={this.state.data}/>)
     }
@@ -40,7 +46,10 @@ class App extends Component<{}, IState> {
    * Get new data from server and update the state with the new data
    */
   getDataFromServer() {
+
+    //declare a variable to increment.
     let increment = 0;
+    //Use setInterval to increment the  retrieval of data automatically every tenth of a second
     const interval = setInterval(() => {
       DataStreamer.getData((serverResponds: ServerRespond[]) => {
         // Update the state by creating a new array of data that consists of
@@ -48,6 +57,7 @@ class App extends Component<{}, IState> {
         this.setState({ data: serverResponds, showGraph: true });
       });
       increment++;
+      //When the increment variable is greater that 1000, then cancel the automatic data retrieval.
       if (increment > 1000) {
         clearInterval(interval);
       }
